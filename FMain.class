@@ -1,62 +1,39 @@
 ' Gambas class file
 
 'Gambas class file
-Public zzz As String
-Public xxx As String
+Public p As Process
+Public mm As Integer 
 Public z As String[]
 Public cc As String
 Const sh As String = "reports.txt"
 Public g As Integer
-
+Const prg As String = "sh"
+Const editors As String = "mousepad"
 
 Public Sub Form_Open()
-  Dim a As String
-  Dim b As File
-  Dim c As String
-  Dim d As String
-  Dim e As String[]
-  Dim command As String
-  TextArea1.Visible = False
-  ListBox1.Visible = True
-  command = "/home/pi/macros/macro/menu.list"
-  command = Args[1]
-  cc = command
- g = 0 
-  z = New String[]
-  b = Open command For Input
-  Do
-    Line Input #b, a
-      ListBox1.Add(a)
-      z.Add(a)
-  Loop Until Eof(b)
-  Close #b
+  loads()
 End
 
 Public Sub ListBox1_Click()
-  Dim p As Process
+  
   Dim t As File
   Dim b As File
   Dim commands As String
   Dim command As String
   Dim zz As String
   Dim a As String
- 
   zz = z[ListBox1.Index]
  
   If InStr(zz, "|") > 0 Then zz = Replace(z[ListBox1.Index], "|", gb.Lf)
   
-  zz = zz & gb.lf & "exit" & gb.Lf
-  
-  
+  zz = zz & gb.Lf & "exit" 
   TextArea1.text = ""
   TextArea1.Visible = True
   ListBox1.Visible = False
-  
-  zzz = ""
-  p = Shell "sh " For Read Write As "p" 
-  
+  g = 1
+  p = Shell prg For Read Write As "p"
   Print #p, zz
-g = 1  
+
 'Finally
 'Catch
 End
@@ -73,7 +50,6 @@ Public Sub Menu4_Click()
   Dim commands As String
   Dim command As String
   Dim zz As String
-
   TextArea1.Visible = False
   ListBox1.Visible = True
   
@@ -89,8 +65,43 @@ Public Sub Menu4_Click()
     TextArea1.text = ""
 End
 
-Public Sub p_Read()
-  Dim s As String
-   s = Read #Last, -256
-  TextArea1.Text = TextArea1.Text & s & gb.Lf 
+Public Sub p_read()
+  Dim a As String
+  a = Read #Last, -256
+  TextArea1.Text = TextArea1.Text & a & gb.Lf
 End
+
+Public Sub Menu6_Click()
+  Shell editors & " " & cc Wait
+  loads
+End
+
+Public Sub loads()
+  Dim a As String
+  Dim b As File
+  Dim c As String
+  Dim d As String
+  Dim e As String[]
+  Dim command As String
+  mm = 0
+  ListBox1.Clear()
+  TextArea1.Visible = False
+  ListBox1.Visible = True
+  command = "/home/pi/macros/macro/menu.list"
+  command = Args[1]
+
+  cc = command
+ g = 0 
+  z = New String[]
+  b = Open command For Input
+  Do
+    Line Input #b, a
+      ListBox1.Add(a)
+      z.Add(a)
+  Loop Until Eof(b)
+  Close #b  
+  
+  
+End
+
+

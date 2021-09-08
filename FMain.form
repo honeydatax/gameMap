@@ -15,6 +15,12 @@
       Text = ("add item")
     }
   }
+  { Menu5 Menu
+    Text = ("edit")
+    { Menu6 Menu
+      Text = ("edit")
+    }
+  }
   { ListBox1 ListBox
     MoveScaled(1,1,62,62)
     Background = Color.DarkMagenta
@@ -25,8 +31,5 @@
     Visible = False
     Background = Color.DarkMagenta
     Foreground = Color.White
-  }
-  { Timer1 #Timer
-    #MoveScaled(3,55)
   }
 }
