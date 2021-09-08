@@ -1,0 +1,4 @@
+mousepad
+echo hello
+echo hello|echo hi
+ls -l

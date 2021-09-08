@@ -1,0 +1,117 @@
+' Gambas class file
+
+'Gambas class file
+Public z As String[]
+Public cc As String
+Const sh As String = "reports.txt"
+Public g As Integer
+
+
+Public Sub Form_Open()
+  Dim a As String
+  Dim b As File
+  Dim c As String
+  Dim d As String
+  Dim e As String[]
+  Dim command As String
+  Timer1.Enabled = False
+  TextArea1.Visible = False
+  ListBox1.Visible = True
+  command = "/home/pi/macros/macro/menu.list"
+  command = Args[1]
+  Timer1.Enabled = False
+  cc = command
+ g = 0 
+  z = New String[]
+  b = Open command For Input
+  Do
+    Line Input #b, a
+      ListBox1.Add(a)
+      z.Add(a)
+  Loop Until Eof(b)
+  Close #b
+End
+
+Public Sub ListBox1_Click()
+  Dim t As File
+  Dim b As File
+  Dim commands As String
+  Dim command As String
+  Dim zz As String
+  Dim a As String
+  Timer1.Enabled = False
+  zz = z[ListBox1.Index]
+ 
+  If InStr(zz, "|") > 0 Then zz = Replace(z[ListBox1.Index], "|", gb.Lf)
+  
+  b = Open Application.Path & "/" & sh For Create
+    Print #b, zz
+  Close #b
+  
+  Shell ("sh " & Application.Path & "/" & sh & "  > " & Application.Path & "/" & "report.txt")
+  
+ Timer1.Enabled = True
+'Finally
+'Catch
+End
+
+Public Sub Menu2_Click()
+  Timer1.Enabled = False
+  TextArea1.Text = ""
+  TextArea1.Visible = True
+  ListBox1.Visible = False
+  g = 0  
+End
+
+Public Sub Menu4_Click()
+  Dim b As File
+  Dim commands As String
+  Dim command As String
+  Dim zz As String
+  Timer1.Enabled = False
+  TextArea1.Visible = False
+  ListBox1.Visible = True
+  
+  command = cc
+  If g = 1 Then Goto escape5
+  zz = Replace(TextArea1.Text, gb.Lf, "|")
+  b = Open command For Append
+    Print #b, zz
+  Close #b
+    ListBox1.Add(zz)
+    z.Add(zz)
+    escape5:
+    TextArea1.text = ""
+End
+
+Public Sub Timer1_Timer()
+  Dim t As File
+  Dim b As File
+  Dim commands As String
+  Dim command As String
+  Dim zz As String
+  Dim a As String
+  Timer1.Enabled = False
+  t = Open Application.Path & "/" & "report.txt" For Input
+  zz = ""
+  a = ""
+  Me.Refresh()
+  
+  Do
+    Line Input #t, a
+    
+    zz = zz & a & gb.Lf
+  Loop Until Eof(t)
+  Close #t
+  
+  
+  TextArea1.Visible = True
+  ListBox1.Visible = False
+  TextArea1.Text = zz
+  TextArea1.Refresh()
+  g = 1
+  Me.Refresh()
+
+  
+
+End
