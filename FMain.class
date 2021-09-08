@@ -14,12 +14,10 @@ Public Sub Form_Open()
   Dim d As String
   Dim e As String[]
   Dim command As String
-  Timer1.Enabled = False
   TextArea1.Visible = False
   ListBox1.Visible = True
   command = "/home/pi/macros/macro/menu.list"
   command = Args[1]
-  Timer1.Enabled = False
   cc = command
  g = 0 
   z = New String[]
@@ -39,7 +37,7 @@ Public Sub ListBox1_Click()
   Dim command As String
   Dim zz As String
   Dim a As String
-  Timer1.Enabled = False
+ 
   zz = z[ListBox1.Index]
  
   If InStr(zz, "|") > 0 Then zz = Replace(z[ListBox1.Index], "|", gb.Lf)
@@ -48,15 +46,20 @@ Public Sub ListBox1_Click()
     Print #b, zz
   Close #b
   
-  Shell ("sh " & Application.Path & "/" & sh & "  > " & Application.Path & "/" & "report.txt")
+  Shell "sh " & Application.Path & "/" & sh Wait To zz
   
- Timer1.Enabled = True
+  
+  TextArea1.Visible = True
+  ListBox1.Visible = False
+  TextArea1.Text = zz
+  TextArea1.Refresh()
+  g = 1
+
 'Finally
 'Catch
 End
 
 Public Sub Menu2_Click()
-  Timer1.Enabled = False
   TextArea1.Text = ""
   TextArea1.Visible = True
   ListBox1.Visible = False
@@ -68,7 +71,7 @@ Public Sub Menu4_Click()
   Dim commands As String
   Dim command As String
   Dim zz As String
-  Timer1.Enabled = False
+
   TextArea1.Visible = False
   ListBox1.Visible = True
   
@@ -84,34 +87,3 @@ Public Sub Menu4_Click()
     TextArea1.text = ""
 End
 
-Public Sub Timer1_Timer()
-  Dim t As File
-  Dim b As File
-  Dim commands As String
-  Dim command As String
-  Dim zz As String
-  Dim a As String
-  Timer1.Enabled = False
-  t = Open Application.Path & "/" & "report.txt" For Input
-  zz = ""
-  a = ""
-  Me.Refresh()
-  
-  Do
-    Line Input #t, a
-    
-    zz = zz & a & gb.Lf
-  Loop Until Eof(t)
-  Close #t
-  
-  
-  TextArea1.Visible = True
-  ListBox1.Visible = False
-  TextArea1.Text = zz
-  TextArea1.Refresh()
-  g = 1
-  Me.Refresh()
-
-  
-
-End
