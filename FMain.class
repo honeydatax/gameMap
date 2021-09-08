@@ -1,6 +1,8 @@
 ' Gambas class file
 
 'Gambas class file
+Public zzz As String
+Public xxx As String
 Public z As String[]
 Public cc As String
 Const sh As String = "reports.txt"
@@ -31,6 +33,7 @@ Public Sub Form_Open()
 End
 
 Public Sub ListBox1_Click()
+  Dim p As Process
   Dim t As File
   Dim b As File
   Dim commands As String
@@ -42,19 +45,18 @@ Public Sub ListBox1_Click()
  
   If InStr(zz, "|") > 0 Then zz = Replace(z[ListBox1.Index], "|", gb.Lf)
   
-  b = Open Application.Path & "/" & sh For Create
-    Print #b, zz
-  Close #b
-  
-  Shell "sh " & Application.Path & "/" & sh Wait To zz
+  zz = zz & gb.lf & "exit" & gb.Lf
   
   
+  TextArea1.text = ""
   TextArea1.Visible = True
   ListBox1.Visible = False
-  TextArea1.Text = zz
-  TextArea1.Refresh()
-  g = 1
-
+  
+  zzz = ""
+  p = Shell "sh " For Read Write As "p" 
+  
+  Print #p, zz
+g = 1  
 'Finally
 'Catch
 End
@@ -87,3 +89,8 @@ Public Sub Menu4_Click()
     TextArea1.text = ""
 End
 
+Public Sub p_Read()
+  Dim s As String
+   s = Read #Last, -256
+  TextArea1.Text = TextArea1.Text & s & gb.Lf 
+End
