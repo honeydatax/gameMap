@@ -1,0 +1,55 @@
+' Gambas class file
+
+Const Outputf As String = "out.png"
+Public command As String
+Public l As String[]
+Public img As Image
+
+Public Sub Form_Open()
+  Dim f As File
+  Dim s As String
+  
+  Dim n As Integer
+  Dim w As Float 
+  Dim maxx As Integer
+  l = New String[]
+  command = "/home/pi/pdfs/pdfs/out.txt"
+  command = Args[1]
+  
+  f = Open command For Input
+    Do
+      Line Input #f, s
+      If (Len(s) + 2) * 16 > maxx Then maxx = (Len(s) + 2) * 16 
+      l.Add(s)
+    Loop Until Eof(f)
+  Close f
+
+  
+  ImageView1.Width = maxx + 16
+  ImageView1.Height = (l.Count + 2) * 16
+  ScrollBar1.MaxValue = ImageView1.Height
+  ScrollBar2.MaxValue = ImageView1.Width
+  ImageView1.Image = New Image(ImageView1.Width, ImageView1.Height)
+  Paint.Begin(ImageView1.Image)
+  Paint.font = Font["free mono,12"]
+  For n = 0 To l.Count - 1
+    Paint.DrawText(l[n], 15, (n + 1) * 16, Len(l[n]) * 16, 16, 0)
+  Next
+  Paint.End
+  'debug
+  FMain.Show()
+  ImageView1.Image.Save(User.Home & "/" & Outputf)
+End
+
+
+Public Sub ScrollBar1_Change()
+  ImageView1.Y = - ScrollBar1.Value
+End
+
+Public Sub ScrollBar2_Change()
+  ImageView1.X = - ScrollBar2.Value
+End
+
+
+
+
