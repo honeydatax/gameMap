@@ -1,4 +1,0 @@
-#mousepad|mousepad
-#echo hello|echo hello
-#echo hi|echo hello|echo hi
-#ls -l|ls -l
