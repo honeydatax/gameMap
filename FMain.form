@@ -1,0 +1,16 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,64)
+  Background = Color.DarkMagenta
+  Foreground = Color.White
+  { DrawingArea1 DrawingArea
+    MoveScaled(1,0,30,13)
+  }
+  { ScrollBar1 ScrollBar
+    MoveScaled(61,0,2,51)
+  }
+  { ScrollBar2 ScrollBar
+    MoveScaled(1,51,60,2)
+  }
+}

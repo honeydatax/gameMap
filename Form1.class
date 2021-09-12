@@ -1,0 +1,42 @@
+' Gambas class file
+
+' Gambas class file
+
+Public command As String
+Public l As String[]
+
+
+Public Sub Printer1_Draw()
+
+  Dim n As Integer
+  Dim w As Float 
+  Return
+  Paint.font = Font["free mono,12"]
+  For n = 0 To l.Count - 1
+    Paint.DrawText(l[n], 15, (n + 1) * 16, Len(l[n]) * 16, 16, 0)
+  Next
+  'debug
+
+
+End
+
+
+
+
+Public Sub Form_Open()
+  Dim f As File
+  
+  Dim s As String
+  l = New String[]
+  command = "/home/pi/pdfs/pdfs/out.txt"
+  command = Args[1]
+  f = Open command For Input
+    Do
+      Line Input #f, s
+      l.Add(s)
+    Loop Until Eof(f)
+  Close f
+
+  If Printer1.Configure() Then Return
+  Printer1.Print
+End

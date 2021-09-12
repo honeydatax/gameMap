@@ -1,0 +1,50 @@
+' Gambas class file
+
+Public command As String
+Public l As String[]
+
+Public Sub Form_Open()
+  Dim f As File
+  
+  Dim s As String
+  l = New String[]
+  command = "/home/pi/pdfs/pdfs/out.txt"
+  command = Args[1]
+  f = Open command For Input
+    Do
+      Line Input #f, s
+      l.Add(s)
+    Loop Until Eof(f)
+  Close f
+
+  
+  
+  DrawingArea1.Height = (l.Count + 2) * 16
+  ScrollBar1.MaxValue = DrawingArea1.Height
+  
+End
+
+Public Sub DrawingArea1_MouseDown()
+  Form1.Show()
+End
+Public Sub DrawingArea1_Draw()
+  Dim n As Integer
+  Dim w As Float 
+  Paint.font = Font["free mono,12"]
+  For n = 0 To l.Count - 1
+    If Len(l[n]) * 16 + 16 > DrawingArea1.Width Then DrawingArea1.Width = Len(l[n]) * 16 + 16
+    Paint.DrawText(l[n], 15, (n + 1) * 16, Len(l[n]) * 16, 16, 0)
+  Next
+  'debug
+ScrollBar2.MaxValue = DrawingArea1.Width
+End
+
+Public Sub ScrollBar1_Change()
+  DrawingArea1.Y = - ScrollBar1.Value
+End
+
+Public Sub ScrollBar2_Change()
+  DrawingArea1.X = - ScrollBar2.Value
+End
+
+
