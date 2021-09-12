@@ -1,2 +1,2 @@
-# macroMenu
-Menu macro usig a menu of bash macros using basic gambas
+# text into png
+text to png in gambas
