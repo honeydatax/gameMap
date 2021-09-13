@@ -13,8 +13,9 @@ Public Sub Form_Open()
   Dim w As Float 
   Dim maxx As Integer
   l = New String[]
+  
   command = "/home/pi/pdfs/pdfs/out.txt"
-  command = Args[1]
+  'command = Args[1]
   
   f = Open command For Input
     Do
@@ -25,20 +26,20 @@ Public Sub Form_Open()
   Close f
 
   
-  ImageView1.Width = maxx + 16
-  ImageView1.Height = (l.Count + 2) * 16
-  ScrollBar1.MaxValue = ImageView1.Height
-  ScrollBar2.MaxValue = ImageView1.Width
-  ImageView1.Image = New Image(ImageView1.Width, ImageView1.Height)
+  ScrollBar1.MaxValue = (l.Count + 2) * 16
+  ScrollBar2.MaxValue = maxx + 16
+  ImageView1.Image = New Image(ScrollBar2.MaxValue, ScrollBar1.MaxValue)
+  ImageView1.Width = ScrollBar2.MaxValue
+  ImageView1.Height = ScrollBar1.MaxValue
   Paint.Begin(ImageView1.Image)
   Paint.font = Font["free mono,12"]
   For n = 0 To l.Count - 1
     Paint.DrawText(l[n], 15, (n + 1) * 16, Len(l[n]) * 16, 16, 0)
   Next
   Paint.End
+  
   'debug
-  FMain.Show()
-  ImageView1.Image.Save(User.Home & "/" & Outputf)
+    ImageView1.Image.Save(User.Home & "/" & Outputf)
 End
 
 

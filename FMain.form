@@ -5,15 +5,19 @@
   Background = Color.DarkMagenta
   Foreground = Color.White
   Text = ("picture build")
+  { ImageView1 ImageView
+    MoveScaled(0,0,16,12)
+    Background = Color.DarkMagenta
+    Foreground = Color.White
+  }
   { ScrollBar1 ScrollBar
     MoveScaled(62,0,2,51)
-    Background = Color.DarkMagenta
+    Background = Color.LightForeground
+    Foreground = Color.LightForeground
   }
   { ScrollBar2 ScrollBar
     MoveScaled(1,51,60,2)
-    Background = Color.DarkMagenta
-  }
-  { ImageView1 ImageView
-    MoveScaled(0,0,21,13)
+    Background = Color.LightGray
+    Foreground = Color.LightForeground
   }
 }
