@@ -4,6 +4,7 @@ Const Outputf As String = "out.png"
 Public command As String
 Public l As String[]
 Public img As Image
+Const runer As String = "img2pdf out.png > out.pdf"
 
 Public Sub Form_Open()
   Dim f As File
@@ -15,7 +16,7 @@ Public Sub Form_Open()
   l = New String[]
   
   command = "/home/pi/pdfs/pdfs/out.txt"
-  'command = Args[1]
+  command = Args[1]
   
   f = Open command For Input
     Do
@@ -33,6 +34,7 @@ Public Sub Form_Open()
   ImageView1.Height = ScrollBar1.MaxValue
   Paint.Begin(ImageView1.Image)
   Paint.font = Font["free mono,12"]
+  Paint.FillRect(0, 0, ScrollBar2.MaxValue, ScrollBar1.MaxValue, Color.DarkMagenta)
   For n = 0 To l.Count - 1
     Paint.DrawText(l[n], 15, (n + 1) * 16, Len(l[n]) * 16, 16, 0)
   Next
@@ -40,6 +42,7 @@ Public Sub Form_Open()
   
   'debug
     ImageView1.Image.Save(User.Home & "/" & Outputf)
+    Shell (runer)
 End
 
 
