@@ -4,9 +4,18 @@ Const Outputf As String = "out.png"
 Public command As String
 Public l As String[]
 Public img As Image
-Const runer As String = "img2pdf out.png > out.pdf"
+Const runer As String = "img2pdf out.png -o out.pdf --pagesize 210mmx297mm"
+
 
 Public Sub Form_Open()
+  command = "http://localhost:8080"  
+End
+
+Public Sub ImageView1_MouseUp()
+    Form_MouseUp()
+End
+
+Public Sub Form_MouseUp()
   Dim f As File
   Dim s As String
   
@@ -15,16 +24,17 @@ Public Sub Form_Open()
   Dim maxx As Integer
   l = New String[]
   
-  command = "/home/pi/pdfs/pdfs/out.txt"
-  command = Args[1]
-  
-  f = Open command For Input
-    Do
-      Line Input #f, s
+  command = inputbox("url", "url", command)
+  Shell "curl " & command Wait To s  
+  s = Replace(s, gb.cr, "")
+  s = Replace(s, gb.Lf, "")
+  s = Replace(s, "<", gb.Lf & "<")
+  l = Split(s, gb.Lf)
+  For n = 0 To l.Count - 1
+      s = l[n]
       If (Len(s) + 2) * 16 > maxx Then maxx = (Len(s) + 2) * 16 
-      l.Add(s)
-    Loop Until Eof(f)
-  Close f
+  Next
+  
 
   
   ScrollBar1.MaxValue = (l.Count + 2) * 16
@@ -41,8 +51,8 @@ Public Sub Form_Open()
   Paint.End
   
   'debug
-    ImageView1.Image.Save(User.Home & "/" & Outputf)
-    Shell (runer)
+    
+    
 End
 
 
