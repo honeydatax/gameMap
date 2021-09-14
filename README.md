@@ -1,3 +1,3 @@
-# text into png
-text to png in gambas
-into pdf
+# html tags
+
+html tags separate html tags
