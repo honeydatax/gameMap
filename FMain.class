@@ -5,10 +5,25 @@ Public command As String
 Public l As String[]
 Public img As Image
 Const runer As String = "img2pdf out.png -o out.pdf --pagesize 210mmx297mm"
-
+Const nbb As String = "<\\B>"
+Const nb As String = "<\\b>"
+Const ni As String = "<\\i>"
+Const nii As String = "<\\I>"
+Const p As String = "<p>"
+Const pp As String = "<P>"
+Const np As String = "<\\p>"
+Const npp As String = "<\\P>"
+Const nli As String = "<\\li>"
+Const nlo As String = "<\\lo>"
+Const br As String = "<br>"
+Const brbr As String = "<BR>"
+Const li As String = "<li>"
+Const lo As String = "<lo>"
 
 Public Sub Form_Open()
   command = "http://localhost:8080"  
+  Print br
+  Print np
 End
 
 Public Sub ImageView1_MouseUp()
@@ -18,11 +33,16 @@ End
 Public Sub Form_MouseUp()
   Dim f As File
   Dim s As String
-  
+  Dim xxx As Float
+  Dim yyy As Float
   Dim n As Integer
   Dim w As Float 
   Dim maxx As Integer
+  Dim bolds As Integer
+  Dim italics As Integer
+  Dim leters As Integer
   l = New String[]
+  
   
   command = inputbox("url", "url", command)
   Shell "curl " & command Wait To s  
@@ -37,17 +57,31 @@ Public Sub Form_MouseUp()
   Next
   
 
-  
+  xxx = 15
+  yyy = 15
+  leters = 12
   ScrollBar1.MaxValue = (l.Count + 2) * 16
   ScrollBar2.MaxValue = maxx + 16
   ImageView1.Image = New Image(ScrollBar2.MaxValue, ScrollBar1.MaxValue)
   ImageView1.Width = ScrollBar2.MaxValue
   ImageView1.Height = ScrollBar1.MaxValue
   Paint.Begin(ImageView1.Image)
-  Paint.font = Font["free mono,12"]
   Paint.FillRect(0, 0, ScrollBar2.MaxValue, ScrollBar1.MaxValue, Color.DarkMagenta)
   For n = 0 To l.Count - 1
-    If l[n] <> "" Then Paint.DrawText(l[n], 15, (n + 1) * 16, Len(l[n]) * 16, 16, 0)
+    If InStr(l[n], "<") > 0 Then
+      If InStr(l[n], "<b>") > 0 Or InStr(l[n], "<B>") > 0 Then bolds = 1
+      If InStr(l[n], nb) > 0 Or InStr(l[n], nbb) > 0 Then bolds = 0
+      If InStr(l[n], "<i>") > 0 Or InStr(l[n], "<I>") > 0 Then italics = 1
+      If InStr(l[n], ni) > 0 Or InStr(l[n], nii) > 0 Then italics = 0
+      If InStr(l[n], br) > 0 Or InStr(l[n], brbr) > 0 Or InStr(l[n], p) > 0 Or InStr(l[n], pp) > 0 Or InStr(l[n], np) > 0 Or InStr(l[n], npp) > 0 Or InStr(l[n], lo) > 0 Or InStr(l[n], li) > 0 Or InStr(l[n], nli) > 0 Or InStr(l[n], nlo) > 0 Then 
+        xxx = 15
+        yyy = yyy + leters + 4
+      Endif
+    Else
+      Paint.font = Font["free mono," & Trim(Str(leters))]
+      If Trim(l[n]) <> "" Then Paint.DrawText(l[n], xxx, yyy, Len(l[n]) * (leters + 2), leters + 4, 0)
+      xxx = Len(l[n]) * (leters + 2)
+    End If 
   Next
   Paint.End
   
