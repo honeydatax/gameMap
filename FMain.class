@@ -19,11 +19,10 @@ Const br As String = "<br>"
 Const brbr As String = "<BR>"
 Const li As String = "<li>"
 Const lo As String = "<lo>"
+Const jj As String = "\""
 
 Public Sub Form_Open()
   command = "http://localhost:8080"  
-  Print br
-  Print np
 End
 
 Public Sub ImageView1_MouseUp()
@@ -32,17 +31,21 @@ End
 
 Public Sub Form_MouseUp()
   Dim f As File
+  Dim ss As String
   Dim s As String
   Dim xxx As Float
   Dim yyy As Float
   Dim n As Integer
+  Dim nn As Integer
   Dim w As Float 
   Dim maxx As Integer
   Dim bolds As Integer
   Dim italics As Integer
   Dim leters As Integer
+  Dim sss As String[]
+  sss = New String[]
   l = New String[]
-  
+  Print jj
   
   command = inputbox("url", "url", command)
   Shell "curl " & command Wait To s  
@@ -69,6 +72,31 @@ Public Sub Form_MouseUp()
   Paint.FillRect(0, 0, ScrollBar2.MaxValue, ScrollBar1.MaxValue, Color.DarkMagenta)
   For n = 0 To l.Count - 1
     If Asc(l[n]) = Asc("<") Then
+      If len(l[n]) > 3 Then
+        ss = Mid(l[n], 1, 3)
+        If ss = "<a " Then
+          sss = Split(l[n], "=")
+          ss = ""
+          If sss.count - 2 < 1 Then ss = sss[1]
+          For nn = 0 To sss.count - 2
+            If InStr(sss[nn], "href=") Then 
+              ss = sss[nn + 1]
+            End If
+          Next
+         
+          If Trim(ss) <> "" Then 
+            sss = Split(ss, jj)  
+            If sss.Count > 1 Then 
+              
+              Paint.font = Font["free mono," & Trim(Str(leters))]
+              Paint.Color(Color.White)
+              If Trim(sss[1]) <> "" Then Paint.DrawText(sss[1], xxx, yyy, Len(sss[1]) * (leters + 2), leters + 4, 4)
+              xxx = Len(sss[1]) * (leters + 2)
+              Paint.Color(Color.Black)
+            End If
+          Endif 
+        Endif 
+      Endif
       If l[n] = "<b>" Or l[n] = "<B>" Then bolds = 1
       If l[n] = nb Or l[n] = nbb Then bolds = 0
       If l[n] = "<i>" Or l[n] = "<I>" Then italics = 1
